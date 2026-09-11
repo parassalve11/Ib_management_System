@@ -1,0 +1,30 @@
+{
+  "name": "bytefx-ib-expense-manager",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1",
+    "lint": "eslint .",
+    "test": "node --test tests/*.test.js",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "next": "16.3.4",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "mysql2": "^3.14.0",
+    "@fontsource/geist": "^5.2.0",
+    "flag-icons": "^7.5.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "tailwindcss": "4.3.3",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "16.3.4",
+    "@playwright/test": "^1.58.0"
+  }
+}
