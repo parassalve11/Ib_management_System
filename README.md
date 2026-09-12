@@ -17,7 +17,7 @@ The supplied `.env.local` explicitly enables **local demo mode**:
 - Email: `name@bytefx.com`
 - Password: `ByteFX2026!`
 
-The login fields are prefilled in demo mode. All 324 initial entries are sample data. Additions and edits persist in `.data/demo/records.json`. The demo session key is generated once in `.data/demo-session-secret`. Demo mode is for local review, not a public deployment.
+The login fields are prefilled in demo mode. The current local records have been cleared for Excel testing. A new demo data directory starts with 324 example entries. Additions and edits persist in `.data/demo/records.json`. The demo session key is generated once in `.data/demo-session-secret`. Demo mode is for local review, not a public deployment.
 
 ## Included workflows
 
@@ -27,7 +27,8 @@ The login fields are prefilled in demo mode. All 324 initial entries are sample 
 - Apply/clear filters and remove individual applied chips.
 - Sortable table headers, pagination and page-size selection.
 - One social-links column with the reference-style dialog.
-- Manual record creation, editing and read-only details.
+- Manual record creation, editing, exact-client-name-confirmed deletion and read-only details.
+- Searchable country picker with flags, USD prefixes, and a shared keyboard-friendly calendar.
 - Excel template, .xlsx/.xls parsing, validation preview, row errors and duplicate detection.
 - Import only valid rows; skip or update existing records.
 - Export all records, or all matching filtered/sorted results across every page.
@@ -80,3 +81,11 @@ npm.cmd run test:e2e
 Browser tests use the locally installed Google Chrome and an isolated demo data directory on port 3100. They cover authentication, filtering, sorting, full-result Excel exports, manual validation, persistence, editing, import preview/duplicates and mobile overflow. Reference-comparison screenshots are saved in `artifacts/`.
 
 Dependencies use the [Next.js App Router setup](https://nextjs.org/docs/app/getting-started/installation) and [SheetJS official distribution](https://docs.sheetjs.com/docs/getting-started/installation/nodejs/).
+
+## Sample import workbook
+
+Download `public/samples/bytefx-ib-sample.xlsx` (also linked from Import Excel) and upload it in Add IB Data > Import Excel. It contains 5,000 fictional clients with valid commercial details (2.90 MB). The first import into the cleared local workspace adds 5,000 records; uploading it again detects 5,000 duplicates. Choose Skip existing to preserve them or Update existing to replace their details.
+
+Deletion is available in Edit IB Data. The signed-in accountant must type the exact saved client name, including capitalization; the API repeats this check. Only the selected record is removed.
+
+Regenerate the sample with `node scripts/generate-sample-workbook.mjs`. Uploading opens a validation dialog, and importing opens a saving dialog until the server responds. The preview shows 100 rows per page; importing includes all valid rows.

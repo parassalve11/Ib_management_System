@@ -49,6 +49,10 @@ async function mutate(fn) {
     const records = rows.map(row => typeof row.payload === "string" ? JSON.parse(row.payload) : row.payload);
     const previous = new Map(records.map(r => [r.id, JSON.stringify(r)]));
     const result = await fn(records);
+    const remaining = new Set(records.map(record => record.id));
+    for (const id of previous.keys()) {
+      if (!remaining.has(id)) await connection.execute("DELETE FROM ib_records WHERE id = ?", [id]);
+    }
     for (const record of records) {
       const json = JSON.stringify(record);
       if (previous.get(record.id) === json) continue;

@@ -3,6 +3,7 @@ import "@fontsource/geist/500.css";
 import "@fontsource/geist/600.css";
 import "flag-icons/css/flag-icons.min.css";
 import "@/styles/globals.css";
+import FeedbackProvider from "@/components/ui/FeedbackProvider";
 
 export const metadata = {
   title: "ByteFX · IB Expense Manager",
@@ -11,5 +12,5 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  return <html lang="en"><body>{children}</body></html>;
+  return <html lang="en"><body><FeedbackProvider>{children}</FeedbackProvider></body></html>;
 }

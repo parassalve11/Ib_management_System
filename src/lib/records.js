@@ -86,6 +86,12 @@ export function previewRecords(inputs, existing) {
   const workbookKeys = new Set();
   return inputs.map((input, i) => {
     const result = validateRecord(input);
+    if (input._excelErrors && typeof input._excelErrors === "object") {
+      for (const [key, message] of Object.entries(input._excelErrors)) {
+        if (excelColumns.some(([field]) => field === key)) result.errors[key] = String(message);
+      }
+      result.valid = Object.keys(result.errors).length === 0;
+    }
     const key = recordKey(result.record);
     const repeated = result.valid && workbookKeys.has(key);
     if (result.valid) workbookKeys.add(key);

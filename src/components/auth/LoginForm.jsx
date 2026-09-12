@@ -4,17 +4,6 @@ import { useRouter } from "next/navigation";
 import Logo from "../ui/Logo";
 import Icon from "../ui/Icon";
 import Modal from "../ui/Modal";
-function LoginBackground() {
-  return <svg className="login-art" viewBox="0 0 1200 660" preserveAspectRatio="none" aria-hidden="true">
-    <defs><linearGradient id="panel" x1="0" y1="0" x2=".5" y2="1"><stop stopColor="#d7eaff" stopOpacity=".8"/><stop offset="1" stopColor="#f8fbff" stopOpacity=".1"/></linearGradient><linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#c6ddff"/><stop offset=".5" stopColor="#75a9fa"/><stop offset="1" stopColor="#fff" stopOpacity="0"/></linearGradient></defs>
-    <g fill="url(#panel)" stroke="url(#edge)" strokeWidth="1.1">
-      <path d="M0 10 395 307Q405 314 405 329V590L0 348Z"/><path d="m0 164 325 189q12 7 12 21v223L0 408Z"/>
-      <path d="m60 253 253 147q12 7 12 20v176L60 442Z"/><path d="m0 339 240 139q12 7 12 20v150L0 502Z"/>
-      <path d="m1200 10-395 297q-10 7-10 22v261l405-242Z"/><path d="m1200 164-325 189q-12 7-12 21v223l337-189Z"/>
-      <path d="m1140 253-253 147q-12 7-12 20v176l265-154Z"/><path d="m1200 339-240 139q-12 7-12 20v150l252-146Z"/>
-    </g>
-  </svg>;
-}
 export default function LoginForm({ demo }) {
   const [showPassword, setShowPassword] = useState(false);
   const [busy,setBusy] = useState(false);
@@ -31,7 +20,7 @@ export default function LoginForm({ demo }) {
       router.replace("/ib-records"); router.refresh();
     } catch (error) { setError(error.message || "Unable to sign in. Please try again."); setBusy(false); }
   }
-  return <main className="login-page"><LoginBackground/><div className="login-stack">
+  return <main className="login-page"><div className="login-stack">
     <Logo large linked={false}/>
     <h1>IB Expense Manager</h1><p className="login-subtitle">Sign in to access the internal system</p>
     <form className="login-card" onSubmit={submit}>
