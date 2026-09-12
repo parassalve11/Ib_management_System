@@ -54,8 +54,8 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .field-error, .form-error { color: var(--error); font-size: 12px; line-height: 1.5; }
 .field-error { display: block; margin-top: 5px; }
 .form-error { padding: 10px 12px; border: 1px solid #f5d3cf; border-radius: 5px; background: #fff9f8; margin: 14px 0; }
-.app-shell { margin: 6px; border: 1px solid #d5e4f4; border-radius: 9px; background: linear-gradient(120deg,#fff 60%,#fafcfe); overflow: hidden; min-height: calc(100dvh - 12px); box-shadow: 0 0 0 1px #eaf2fa; }
-.records-shell { height: calc(100dvh - 12px); min-height: 640px; display: flex; flex-direction: column; }
+.app-shell { margin: 0; border: 0; border-radius: 0; background: linear-gradient(120deg,#fff 60%,#fafcfe); overflow: hidden; min-height: 100dvh; box-shadow: none; }
+.records-shell { height: 100dvh; min-height: 640px; display: flex; flex-direction: column; }
 .top-header { height: 58px; min-height: 58px; display: flex; justify-content: space-between; align-items: center; padding: 0 36px; border-bottom: 1px solid var(--border); background: #ffffff96; position: relative; z-index: 30; }
 .header-brand { display: flex; align-items: center; gap: 34px; }
 .brand-link { display: inline-flex; }
@@ -315,8 +315,7 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   .import-step p { font-size: 11px; }
 }
 @media (max-width: 600px) {
-  .app-shell { margin: 0; min-height: 100dvh; border: 0; border-radius: 0; }
-  .records-shell { height: 100dvh; min-height: 500px; }
+  .records-shell { min-height: 500px; }
   .top-header { padding: 0 16px; height: 58px; }
   .brand-logo { width: 118px; }
   .avatar { width: 28px; height: 28px; }
@@ -465,7 +464,8 @@ input, select { transition: border-color 180ms ease, box-shadow 180ms ease; }
 .delete-record-summary { background: #fff5f4; border: 1px solid #f4d8d4; padding: 14px; border-radius: 8px; overflow-wrap: anywhere; }
 .delete-record-summary span { display: block; color: #8c6865; font-size: 12px; margin-top: 5px; }
 .import-warnings { padding: 12px 16px; border: 1px solid #efd6a4; border-radius: 8px; background: #fffbf0; color: #916021; margin: 14px 0; font-size: 12px; line-height: 1.6; }
-.sample-download { display: block; margin-top: 13px; }
+.sample-downloads { margin-top: 13px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.sample-download { display: block; text-align: left; line-height: 1.5; }
 .toast-region { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 200; width: max-content; max-width: calc(100% - 32px); }
 .feedback-toast { display: flex; align-items: center; gap: 10px; background: #163e2d; color: white; padding: 10px 12px 10px 16px; border-radius: 10px; box-shadow: 0 8px 30px #12271e25; font-size: 12px; }
 @media (max-width: 600px) {

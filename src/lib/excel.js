@@ -24,11 +24,20 @@ function normalizeAmount(value) {
   if(/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(text))return text.replaceAll(",","");
   return value.trim();
 }
+// Excel stores dates as serial numbers. This conversion is deliberately self-contained:
+// XLSX.SSF is not exposed by every SheetJS build (it is missing from the ESM bundle Next.js
+// uses), so calling it would throw and fail the whole import for any file with real date cells.
+export function serialToISODate(serial,date1904=false) {
+  if(!Number.isFinite(serial)||serial<0||serial>2958465)return "";
+  let days=Math.floor(serial);
+  let base;
+  if(date1904){base=Date.UTC(1904,0,1);}
+  else {base=Date.UTC(1899,11,30);if(days<60)days+=1;}
+  const date=new Date(base+days*86400000);
+  return Number.isNaN(date.getTime())?"":date.toISOString().slice(0,10);
+}
 function normalizeDate(value,date1904) {
-  if(typeof value==="number") {
-    const date=XLSX.SSF.parse_date_code(value,{date1904});
-    return date?`${date.y}-${String(date.m).padStart(2,"0")}-${String(date.d).padStart(2,"0")}`:"";
-  }
+  if(typeof value==="number")return serialToISODate(value,date1904);
   if(value instanceof Date&&!Number.isNaN(value.getTime()))return value.toISOString().slice(0,10);
   return String(value??"").trim();
 }

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import * as XLSX from "xlsx";
 import { seedRecords } from "../src/lib/seed.js";
 import { validateRecord, filterAndSort, previewRecords, excelColumns, recordKey } from "../src/lib/records.js";
-import { createWorkbook, parseWorkbook, parseWorkbookDetailed } from "../src/lib/excel.js";
+import { createWorkbook, parseWorkbook, parseWorkbookDetailed, serialToISODate } from "../src/lib/excel.js";
 const records = seedRecords();
 test("normalizes countries and accepts the reference data", () => {
   const result = validateRecord({ ...records[0], countryCode: "United Arab Emirates" });
@@ -98,4 +98,36 @@ test("provided sample workbook contains 5,000 valid distinct importable records 
   const rows=previewRecords(parseWorkbook(buffer),records);
   assert.equal(rows.length,5000);
   assert.ok(rows.every(row=>row.valid && !row.duplicate && !row.repeated));
+});
+
+test("converts Excel date serials without depending on SheetJS internals", () => {
+  assert.equal(serialToISODate(46183),"2026-06-10");
+  assert.equal(serialToISODate(45292),"2024-01-01");
+  assert.equal(serialToISODate(61),"1900-03-01");
+  assert.equal(serialToISODate(0,true),"1904-01-01");
+  assert.equal(serialToISODate(1461,true),"1908-01-01");
+  assert.equal(serialToISODate(-1),"");
+  assert.equal(serialToISODate(Number.NaN),"");
+});
+
+test("small sample workbook imports cleanly", async () => {
+  const {readFile}=await import("node:fs/promises");
+  const rows=previewRecords(parseWorkbook(await readFile("public/samples/bytefx-ib-sample-50.xlsx")),[]);
+  assert.equal(rows.length,50);
+  assert.ok(rows.every(row=>row.valid && !row.repeated));
+});
+
+test("validation test workbook reports every failure type without throwing", async () => {
+  const {readFile}=await import("node:fs/promises");
+  const result=parseWorkbookDetailed(await readFile("public/samples/bytefx-ib-validation-test.xlsx"));
+  const rows=previewRecords(result.inputs,[]);
+  const status=label=>rows.filter(row=>row.status===label).length;
+  assert.equal(rows.length,17);
+  assert.equal(status("Valid"),7);
+  assert.equal(status("Invalid"),9);
+  assert.equal(status("Needs attention"),1);
+  assert.equal(rows.find(row=>row.record.clientName==="Serial Date Row").record.payoutDate,"2026-06-10");
+  assert.match(rows.find(row=>row.record.clientName==="Formula Cell").errors.totalSalary,/Formulas are not supported/);
+  assert.match(rows.find(row=>row.record.clientName==="Error Cell").errors.upfrontPaid,/Excel error/);
+  assert.equal(result.warnings.length,2);
 });
